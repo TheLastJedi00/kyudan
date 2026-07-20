@@ -1,0 +1,8 @@
+<button
+  type="button"
+  class="grid min-h-touch min-w-touch place-items-center rounded-lg border border-line bg-surface text-fg transition-colors hover:bg-surface-muted"
+  [attr.aria-label]="theme.mode() === 'dark' ? 'Ativar tema claro' : 'Ativar tema escuro'"
+  (click)="theme.toggle()"
+>
+  <app-icon [name]="theme.mode() === 'dark' ? 'sun' : 'moon'" [size]="20" />
+</button>

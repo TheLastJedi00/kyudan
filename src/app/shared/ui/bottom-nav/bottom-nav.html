@@ -1,0 +1,21 @@
+<nav
+  class="fixed inset-x-0 bottom-0 z-20 border-t border-line bg-surface/95 backdrop-blur"
+  aria-label="Navegação principal"
+>
+  <ul class="mx-auto flex max-w-3xl items-stretch justify-around">
+    @for (item of items(); track item.path) {
+      <li class="flex-1">
+        <a
+          [routerLink]="item.path"
+          routerLinkActive="nav-active text-fg"
+          [routerLinkActiveOptions]="{ exact: exact(item.path) }"
+          #rla="routerLinkActive"
+          class="flex min-h-touch flex-col items-center justify-center gap-0.5 py-2 text-fg-subtle transition-colors"
+        >
+          <app-icon [name]="item.icon" [size]="22" />
+          <span class="text-[11px] font-medium" [class.font-bold]="rla.isActive">{{ item.label }}</span>
+        </a>
+      </li>
+    }
+  </ul>
+</nav>
