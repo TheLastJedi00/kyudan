@@ -1,0 +1,11 @@
+<div class="flex flex-wrap items-center gap-1.5" role="list" aria-label="Faixas conquistadas">
+  @for (b of belts(); track b.color) {
+    <app-belt-badge
+      role="listitem"
+      [color]="b.color"
+      [locked]="b.locked"
+      [size]="size()"
+      [attr.aria-label]="b.label + (b.locked ? ' (bloqueada)' : ' (conquistada)')"
+    />
+  }
+</div>

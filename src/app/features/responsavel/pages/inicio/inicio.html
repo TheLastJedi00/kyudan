@@ -1,0 +1,87 @@
+<div class="animate-fade-in space-y-3">
+  <app-dependente-selector />
+
+  <!-- Ação pendente em destaque (CTA Preto) -->
+  @if (acaoPrincipal(); as acao) {
+    <app-card [emphasis]="true">
+      <p class="text-xs font-semibold uppercase tracking-wide text-fg-subtle">Precisa da sua atenção</p>
+      <h2 class="mt-1 text-lg font-bold leading-snug">{{ acao.titulo }}</h2>
+      <p class="mt-1 text-sm text-fg-muted">{{ acao.descricao }}</p>
+      <div class="mt-3">
+        @if (acao.tipo === 'financeiro') {
+          <app-button variant="primary" [block]="true" routerLink="/responsavel" [disabled]="resolvido()" (press)="resolvido.set(true)">
+            @if (resolvido()) {
+              <app-icon name="check" [size]="16" /> Pagamento em processamento
+            } @else {
+              Pagar agora
+            }
+          </app-button>
+        } @else {
+          <app-button variant="primary" [block]="true" routerLink="/responsavel/autorizacoes">
+            Ver detalhes da graduação
+          </app-button>
+        }
+      </div>
+    </app-card>
+  } @else {
+    <app-card>
+      <p class="text-sm text-fg-muted">Tudo em dia por aqui. Bons treinos.</p>
+    </app-card>
+  }
+
+  <!-- Financeiro consolidado (plano familiar) -->
+  <app-card>
+    <div class="mb-2 flex items-center justify-between">
+      <div>
+        <p class="text-xs text-fg-muted">Plano familiar — total em aberto</p>
+        <p class="text-2xl font-bold" [class.text-belt-red]="store.totalAberto() > 0">
+          {{ formatBRL(store.totalAberto()) }}
+        </p>
+      </div>
+    </div>
+    <ul class="mb-3 space-y-1.5 text-sm">
+      @for (f of store.faturas(); track f.id) {
+        @if (f.status !== 'paga') {
+          <li class="flex items-center justify-between">
+            <span class="text-fg-muted">{{ f.descricao }}</span>
+            <span class="font-medium">{{ formatBRL(f.valor) }}</span>
+          </li>
+        }
+      }
+    </ul>
+    @if (store.totalAberto() > 0) {
+      <app-button variant="primary" [block]="true" [disabled]="resolvido()" (press)="resolvido.set(true)">
+        @if (resolvido()) {
+          <app-icon name="check" [size]="16" /> Pagamento em processamento
+        } @else {
+          Pagar tudo em uma transação
+        }
+      </app-button>
+    } @else {
+      <p class="flex items-center gap-1.5 text-sm text-fg-muted">
+        <app-icon name="check" [size]="16" class="text-belt-green" /> Nenhuma pendência financeira.
+      </p>
+    }
+  </app-card>
+
+  <!-- Resumo dos dependentes -->
+  <section class="space-y-3">
+    <h3 class="text-sm font-semibold uppercase tracking-wide text-fg-subtle">Meus dependentes</h3>
+    @for (dep of store.dependentes(); track dep.id) {
+      <app-card>
+        <div class="mb-2 flex items-center justify-between">
+          <div>
+            <p class="font-semibold leading-tight">{{ dep.nome }}</p>
+            <p class="text-xs text-fg-subtle">Faixa {{ dep.faixaAtual.label }}</p>
+          </div>
+          @if (dep.proximaFaixa) {
+            <span class="text-xs text-fg-muted">{{ dep.progressoPercent }}%</span>
+          }
+        </div>
+        @if (dep.proximaFaixa) {
+          <app-progress-bar [percent]="dep.progressoPercent" [beltColor]="dep.beltColor" />
+        }
+      </app-card>
+    }
+  </section>
+</div>

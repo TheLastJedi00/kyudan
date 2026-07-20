@@ -1,0 +1,11 @@
+<div
+  class="flex min-h-touch items-center gap-2 rounded-xl border border-line bg-surface px-3 text-fg-muted focus-within:ring-2 focus-within:ring-belt-black/30 dark:focus-within:ring-white/20"
+>
+  <app-icon name="search" [size]="18" />
+  <input
+    type="search"
+    class="w-full bg-transparent py-2 text-sm text-fg placeholder:text-fg-subtle focus:outline-none"
+    [placeholder]="placeholder()"
+    (input)="query.emit($any($event.target).value)"
+  />
+</div>

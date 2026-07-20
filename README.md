@@ -1,59 +1,88 @@
-# KyudanFe
+# KyuDan — Gestão ABK (MVC)
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.3.24.
+**KyuDan** é o sistema de gestão da **Associação Blumenauense de Karatê (ABK)**. Este repositório
+(`kyudan-fe`) contém o front-end do **MVC (Minimum Viable Concept)**: um protótipo visual, com dados
+mocados e arquitetura genérica, que tangibiliza o valor e a usabilidade do produto antes do backend.
 
-## Development server
+> Estética inspirada no Karatê: fundo branco (o kimono), tipografia e CTAs em preto (a faixa preta/Dan),
+> e a progressão de faixas **FCK/CBK** como linguagem visual de status e conquistas.
 
-To start a local development server, run:
+## ✨ Funcionalidades (por role)
 
-```bash
-ng serve
+O app é **Mobile First** e adapta a navegação inferior à persona ativa (troca no header).
+
+| Role | "O quê" | Telas |
+|------|---------|-------|
+| **Aluno** — O Caminho | Evolução pessoal | Dashboard de progresso + currículo técnico, O Cartel (graduações/competições), carteira digital, central financeira (copiar PIX) |
+| **Professor** — O Tatame | Operação na ponta | Visão do Dia, chamada rápida (tap = presença, alertas por aluno), avaliação de currículo, diário de bordo, indicação ao exame |
+| **Responsável** — A Base | Acompanhar dependentes | Family View, home de atrito zero + financeiro consolidado, evolução pedagógica, autorizações digitais, calendário de presença |
+| **Gestão** — A Cúpula | Visão macro | Painel executivo (busca global, alertas, métricas, saúde dos pólos), pólos, filiações FCK/CBK + cobrança em lote, eventos, financeiro/inventário |
+
+## 🧱 Stack & Arquitetura
+
+- **Angular 20** (standalone, **signals**, zoneless, SSR/Express com render client-side).
+- **Tailwind CSS + SCSS** — design system de faixas via tokens (`belt-*`) e superfícies tematizáveis
+  (light padrão / **dark mode** nativo).
+- **Firebase / Firestore** (projeto `kyudan-da348`) como BaaS temporário.
+- **Padrão Repository/Adapter:** os componentes consomem apenas interfaces `I*Service`
+  (`src/app/core/contracts`). A implementação ativa é escolhida em `environment.dataSource`:
+  - `firebase` → `Firebase*Service` (isola todo o Firestore);
+  - `mock` → repositórios in-memory (roda 100% offline).
+
+  Trocar para uma API NestJS no futuro = criar `Api*Service` e ajustar `provideData()` — **sem tocar na UI**.
+
+### Estrutura
+
+```
+src/app/
+  core/            # models, contracts (I*Service), services (theme, belt lineage, session),
+                   # firebase/ (impl. Firestore), data/ (mock dataset + impl. in-memory + provideData)
+  shared/ui/       # design system (dumb components): belt-badge, belt-shelf, progress-bar,
+                   # app-card, alert-chip, button, search-bar, digital-card, theme-toggle, bottom-nav, icon
+  shared/util/     # formatação pt-BR e datas
+  layout/          # app shell (header + nav adaptativa) e nav-config
+  features/        # aluno, professor, responsavel, gestao (cada um com store + pages lazy)
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
-
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+## 🚀 Como rodar
 
 ```bash
-ng generate component component-name
+npm install
+npm start           # http://localhost:4200
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+### Fonte de dados
+
+Por padrão o app usa **Firestore** (`environment.dataSource = 'firebase'`). Para vê-lo com dados,
+**popule o Firestore uma vez**:
 
 ```bash
-ng generate --help
+npm run seed        # grava o dataset mocado da ABK no projeto kyudan-da348
 ```
 
-## Building
+> Para uma demo **offline instantânea** (sem rede/seed), altere `dataSource` para `'mock'`
+> em `src/environments/environment.ts`.
 
-To build the project run:
+### Regras do Firestore
+
+Alterações em `firestore.rules` exigem deploy manual:
 
 ```bash
-ng build
+firebase deploy --only firestore:rules
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+## 🧪 Build & testes
 
 ```bash
-ng test
+npm run build       # build de produção (AOT)
+npm test            # testes unitários (Karma/Jasmine)
 ```
 
-## Running end-to-end tests
+## 🎨 Sistema de cores (linhagem FCK/CBK)
 
-For end-to-end (e2e) testing, run:
+`Branca → Amarela → Vermelha → Laranja → Verde → Roxa → Marrom → Preta (Dan)` — usadas com parcimônia,
+apenas em status, badges de conquista e sinalizações.
 
-```bash
-ng e2e
-```
+---
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+_MVC — Spec 001. Dados mocados; sem autenticação real (personas selecionáveis no header)._

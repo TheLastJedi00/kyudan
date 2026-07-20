@@ -1,0 +1,36 @@
+rules_version = '2';
+
+// ============================================================================
+// KyuDan MVC — Regras do Firestore
+//
+// Contexto: o MVC usa personas MOCADAS (sem Firebase Auth), então não há
+// `request.auth` para restringir leitura por usuário. As regras abaixo:
+//   - Liberam LEITURA das coleções de demonstração conhecidas;
+//   - Permitem ESCRITA apenas nessas coleções (para o seed e as ações do MVC);
+//   - NEGAM qualquer caminho fora da lista (protege a base contra floods/uso indevido).
+//
+// LIMITAÇÃO CONHECIDA (fora do escopo do MVC): a exigência "Aluno só lê os
+// próprios dados" só é aplicável com Firebase Auth. Ao introduzir autenticação
+// (Spec futura), trocar `allow read: if true` por checagens sobre request.auth.uid.
+// ============================================================================
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isDemoCollection(name) {
+      return name in [
+        'usuarios', 'alunos', 'polos', 'turmas', 'exames', 'campeonatos',
+        'indicacoes', 'faturas', 'splits', 'inventario', 'frequencias'
+      ];
+    }
+
+    match /{collection}/{docId} {
+      allow read, write: if isDemoCollection(collection);
+    }
+
+    // Qualquer outro caminho é negado por padrão.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

@@ -1,0 +1,109 @@
+<div class="animate-fade-in space-y-4 pb-4">
+  <!-- Exames -->
+  <section class="space-y-3">
+    <div class="flex items-center justify-between">
+      <h2 class="text-lg font-bold">Exames de graduação</h2>
+      <app-button variant="secondary" (press)="mostrarForm.set(!mostrarForm())">
+        {{ mostrarForm() ? 'Cancelar' : '+ Novo exame' }}
+      </app-button>
+    </div>
+
+    @if (mostrarForm()) {
+      <app-card>
+        <div class="animate-slide-down space-y-3">
+          <div>
+            <label class="mb-1 block text-xs font-medium text-fg-muted">Título</label>
+            <input class="input" [ngModel]="titulo()" (ngModelChange)="titulo.set($event)" placeholder="Ex.: Exame de Graduação — Primavera 2026" />
+          </div>
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label class="mb-1 block text-xs font-medium text-fg-muted">Data</label>
+              <input type="date" class="input" [ngModel]="data()" (ngModelChange)="data.set($event)" />
+            </div>
+            <div>
+              <label class="mb-1 block text-xs font-medium text-fg-muted">Limite pagamento</label>
+              <input type="date" class="input" [ngModel]="prazo()" (ngModelChange)="prazo.set($event)" />
+            </div>
+          </div>
+          <div>
+            <label class="mb-1 block text-xs font-medium text-fg-muted">Local</label>
+            <input class="input" [ngModel]="local()" (ngModelChange)="local.set($event)" placeholder="Pólo / ginásio" />
+          </div>
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label class="mb-1 block text-xs font-medium text-fg-muted">Taxa (R$)</label>
+              <input type="number" class="input" [ngModel]="taxa()" (ngModelChange)="taxa.set(+$event)" />
+            </div>
+            <div>
+              <label class="mb-1 block text-xs font-medium text-fg-muted">Faixa-alvo</label>
+              <select class="input" [ngModel]="faixaAlvo()" (ngModelChange)="faixaAlvo.set($event)">
+                @for (b of store.faixasAlvo; track b.id) {
+                  <option [value]="b.color">{{ b.label }}</option>
+                }
+              </select>
+            </div>
+          </div>
+          <app-button variant="primary" [block]="true" [disabled]="!titulo().trim() || !data()" (press)="criarExame()">
+            Criar exame
+          </app-button>
+        </div>
+      </app-card>
+    }
+
+    @for (e of store.exames(); track e.id) {
+      <app-card>
+        <div class="flex items-start gap-3">
+          <app-belt-badge [color]="e.faixaAlvo" [size]="20" />
+          <div class="min-w-0 flex-1">
+            <p class="font-semibold leading-tight">{{ e.titulo }}</p>
+            <p class="text-xs text-fg-subtle">{{ formatData(e.data) }} · {{ e.local }}</p>
+            <p class="mt-1 text-xs font-medium text-belt-green">
+              {{ aptosCount(e) }} aluno(s) aptos por carência
+            </p>
+          </div>
+        </div>
+        <div class="mt-3 grid grid-cols-2 gap-2">
+          <app-button variant="secondary" (press)="marcarAcao('lista-' + e.id)">
+            @if (acao() === 'lista-' + e.id) {
+              <app-icon name="check" [size]="15" /> Lista gerada
+            } @else {
+              Gerar lista de chamada
+            }
+          </app-button>
+          <app-button variant="secondary" (press)="marcarAcao('cert-' + e.id)">
+            @if (acao() === 'cert-' + e.id) {
+              <app-icon name="check" [size]="15" /> Certificados
+            } @else {
+              Emitir certificados
+            }
+          </app-button>
+        </div>
+      </app-card>
+    }
+  </section>
+
+  <!-- Campeonatos -->
+  <section class="space-y-3">
+    <h2 class="text-lg font-bold">Campeonatos</h2>
+    @for (c of store.campeonatos(); track c.id) {
+      <app-card>
+        <p class="font-semibold leading-tight">{{ c.titulo }}</p>
+        <p class="text-xs text-fg-subtle">{{ formatData(c.data) }} · {{ c.local }}</p>
+        <div class="mt-2 flex flex-wrap gap-1.5">
+          @for (doc of c.documentosExigidos; track doc) {
+            <span class="rounded-full bg-surface-muted px-2 py-0.5 text-[11px] font-medium text-fg-muted">{{ doc }}</span>
+          }
+        </div>
+        <div class="mt-3">
+          <app-button variant="primary" [block]="true" (press)="marcarAcao('conv-' + c.id)">
+            @if (acao() === 'conv-' + c.id) {
+              <app-icon name="check" [size]="16" /> Atletas convocados
+            } @else {
+              Convocar atletas de rendimento
+            }
+          </app-button>
+        </div>
+      </app-card>
+    }
+  </section>
+</div>

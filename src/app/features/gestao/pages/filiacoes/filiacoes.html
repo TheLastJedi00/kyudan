@@ -1,0 +1,79 @@
+<div class="animate-fade-in space-y-3 pb-4">
+  <div class="flex items-center justify-between">
+    <h2 class="text-lg font-bold">Filiações</h2>
+    <app-button variant="secondary" (press)="exportar()">
+      @if (exportado()) {
+        <app-icon name="check" [size]="15" /> Relatório gerado
+      } @else {
+        Exportar / Compartilhar
+      }
+    </app-button>
+  </div>
+  @if (exportado()) {
+    <app-card>
+      <p class="text-sm text-fg-muted">
+        Relatório oficial (PDF) pronto para renovação de alvará. Compartilhe via WhatsApp ou e-mail.
+      </p>
+    </app-card>
+  }
+
+  <!-- Filtros -->
+  <div class="flex gap-1.5">
+    @for (f of filtros; track f.valor) {
+      <button
+        type="button"
+        class="rounded-full border px-3 py-1.5 text-xs font-semibold transition-colors"
+        [class]="
+          filtro() === f.valor
+            ? 'border-belt-black bg-belt-black text-white dark:border-white dark:bg-white dark:text-belt-black'
+            : 'border-line text-fg-muted'
+        "
+        (click)="filtro.set(f.valor)"
+      >
+        {{ f.label }}
+      </button>
+    }
+  </div>
+
+  <!-- Lista -->
+  <ul class="space-y-2">
+    @for (a of lista(); track a.id) {
+      <li>
+        <app-card [flush]="true">
+          <button type="button" class="flex w-full items-start gap-3 p-3 text-left" (click)="toggle(a.id)">
+            <span
+              class="mt-0.5 grid h-6 w-6 shrink-0 place-items-center rounded-md border text-xs font-bold"
+              [class]="
+                selecionados().has(a.id)
+                  ? 'border-belt-black bg-belt-black text-white dark:border-white dark:bg-white dark:text-belt-black'
+                  : 'border-line'
+              "
+            >
+              @if (selecionados().has(a.id)) { <app-icon name="check" [size]="14" /> }
+            </span>
+            <div class="min-w-0 flex-1">
+              <p class="truncate font-medium leading-tight">{{ a.nome }}</p>
+              <p class="text-xs text-fg-subtle">{{ store.poloNome(a.poloId) }}</p>
+              <div class="mt-1.5 flex flex-wrap gap-1.5 text-[10px] font-bold">
+                <span [class]="'text-belt-' + (a.filiacoes.abk === 'regular' ? 'green' : 'red')">ABK {{ statusLabel(a.filiacoes.abk) }}</span>
+                <span [class]="'text-belt-' + (a.filiacoes.fck === 'regular' ? 'green' : a.filiacoes.fck === 'vencendo' ? 'orange' : 'red')">FCK {{ statusLabel(a.filiacoes.fck) }}</span>
+                <span [class]="'text-belt-' + (a.filiacoes.cbk === 'regular' ? 'green' : 'red')">CBK {{ statusLabel(a.filiacoes.cbk) }}</span>
+              </div>
+            </div>
+          </button>
+        </app-card>
+      </li>
+    } @empty {
+      <li><app-card><p class="text-sm text-fg-muted">Nenhum aluno neste filtro.</p></app-card></li>
+    }
+  </ul>
+
+  <!-- Notificação em lote (CTA Preto) -->
+  <app-button variant="primary" [block]="true" [disabled]="!totalSel()" (press)="notificar()">
+    @if (notificados()) {
+      <app-icon name="check" [size]="16" /> Cobranças enviadas
+    } @else {
+      Cobrar anuidade{{ totalSel() ? ' (' + totalSel() + ')' : '' }}
+    }
+  </app-button>
+</div>

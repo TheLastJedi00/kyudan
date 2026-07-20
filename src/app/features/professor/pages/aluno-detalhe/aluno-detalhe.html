@@ -1,0 +1,115 @@
+@if (aluno(); as a) {
+  <div class="animate-fade-in space-y-3 pb-4">
+    <!-- Cabeçalho -->
+    <div class="flex items-center gap-2">
+      <a routerLink="/professor" class="grid min-h-touch min-w-touch place-items-center rounded-lg text-fg-muted hover:bg-surface-muted" aria-label="Voltar">
+        <app-icon name="chevron" [size]="20" class="rotate-180" />
+      </a>
+      <div class="flex items-center gap-2">
+        <app-belt-badge [color]="a.beltColor" [size]="18" />
+        <h2 class="text-lg font-bold leading-tight">{{ a.nome }}</h2>
+      </div>
+    </div>
+
+    <!-- Evolução -->
+    <app-card>
+      <div class="mb-1 flex items-baseline justify-between text-sm">
+        <span class="font-medium">{{ faixa()?.label }}</span>
+        <span class="text-fg-muted">{{ a.horasAcumuladas }}/{{ faixa()?.requiredHours }}h</span>
+      </div>
+      <app-progress-bar [percent]="progresso()" [beltColor]="a.beltColor" />
+    </app-card>
+
+    <!-- Avaliação de currículo -->
+    <app-card>
+      <h3 class="mb-1 font-semibold">Avaliação de currículo</h3>
+      <p class="mb-3 text-xs text-fg-subtle">Toque para registrar o domínio da técnica.</p>
+      <div class="space-y-3">
+        @for (grupo of grupos(); track grupo.titulo) {
+          <div>
+            <p class="mb-1.5 text-xs font-semibold uppercase tracking-wide text-fg-subtle">{{ grupo.titulo }}</p>
+            <ul class="space-y-2">
+              @for (item of grupo.itens; track item.id) {
+                <li>
+                  <button
+                    type="button"
+                    class="flex min-h-touch w-full items-center gap-3 rounded-xl border px-3 text-left transition-colors"
+                    [class]="item.dominado ? 'border-belt-green bg-belt-green/5' : 'border-line'"
+                    (click)="toggleItem(item)"
+                    [attr.aria-pressed]="item.dominado"
+                  >
+                    <span
+                      class="grid h-6 w-6 shrink-0 place-items-center rounded-full text-xs font-bold"
+                      [class.bg-belt-green]="item.dominado"
+                      [class.text-white]="item.dominado"
+                      [class.bg-surface-muted]="!item.dominado"
+                      [class.text-fg-subtle]="!item.dominado"
+                    >
+                      @if (item.dominado) { <app-icon name="check" [size]="14" /> }
+                    </span>
+                    <span class="flex-1" [class.text-fg-muted]="!item.dominado">{{ item.nome }}</span>
+                  </button>
+                </li>
+              }
+            </ul>
+          </div>
+        }
+      </div>
+    </app-card>
+
+    <!-- Diário de bordo -->
+    <app-card>
+      <h3 class="mb-3 font-semibold">Diário de bordo</h3>
+
+      <!-- Registrar ocorrência -->
+      <div class="mb-4 space-y-2">
+        <div class="flex flex-wrap gap-1.5">
+          @for (t of tags; track t.valor) {
+            <button
+              type="button"
+              class="rounded-full border px-3 py-1 text-xs font-semibold transition-colors"
+              [class.border-belt-black]="novaTag() === t.valor"
+              [class.bg-belt-black]="novaTag() === t.valor"
+              [class.text-white]="novaTag() === t.valor"
+              [class.border-line]="novaTag() !== t.valor"
+              [class.text-fg-muted]="novaTag() !== t.valor"
+              (click)="novaTag.set(t.valor)"
+            >
+              {{ t.label }}
+            </button>
+          }
+        </div>
+        <textarea
+          rows="2"
+          class="w-full rounded-xl border border-line bg-surface p-3 text-sm text-fg placeholder:text-fg-subtle focus:outline-none focus:ring-2 focus:ring-belt-black/30 dark:focus:ring-white/20"
+          placeholder="Ex.: Ótimo controle no Kumite hoje."
+          [ngModel]="novoTexto()"
+          (ngModelChange)="novoTexto.set($event)"
+        ></textarea>
+        <app-button variant="primary" [block]="true" [disabled]="!novoTexto().trim()" (press)="registrarOcorrencia()">
+          Registrar ocorrência
+        </app-button>
+      </div>
+
+      <!-- Histórico -->
+      @if (a.ocorrencias.length) {
+        <ul class="space-y-2">
+          @for (o of a.ocorrencias; track o.id) {
+            <li class="rounded-xl border border-line p-3">
+              <div class="mb-1 flex items-center justify-between gap-2">
+                <app-alert-chip [tone]="tagTone(o.tag)" [label]="tagLabel(o.tag)" />
+                <span class="text-xs text-fg-subtle">{{ formatData(o.data) }}</span>
+              </div>
+              <p class="text-sm">{{ o.texto }}</p>
+              <p class="mt-1 text-xs text-fg-subtle">— {{ o.autorNome }}</p>
+            </li>
+          }
+        </ul>
+      } @else {
+        <p class="text-sm text-fg-muted">Nenhuma ocorrência registrada.</p>
+      }
+    </app-card>
+  </div>
+} @else {
+  <p class="py-10 text-center text-fg-muted">Carregando perfil...</p>
+}

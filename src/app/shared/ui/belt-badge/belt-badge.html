@@ -1,0 +1,17 @@
+@if (locked()) {
+  <span
+    class="inline-block rounded-full border border-dashed border-line opacity-50"
+    [style.width.px]="size()"
+    [style.height.px]="size()"
+    [attr.title]="'Faixa ainda não conquistada'"
+  ></span>
+} @else {
+  <span
+    class="inline-block rounded-full"
+    [class.ring-1]="needsRing()"
+    [class.ring-line]="needsRing()"
+    [style.width.px]="size()"
+    [style.height.px]="size()"
+    [style.backgroundColor]="hex()"
+  ></span>
+}

@@ -1,0 +1,21 @@
+@if (aluno(); as a) {
+  <div class="animate-fade-in space-y-3">
+    <app-digital-card
+      [nome]="a.nome"
+      [matricula]="a.id"
+      [beltColor]="a.beltColor"
+      [faixaLabel]="a.faixaAtual.label"
+      [filiacoes]="a.filiacoes"
+    />
+
+    <app-card>
+      <h3 class="mb-2 font-semibold">Sobre a carteira</h3>
+      <p class="text-sm text-fg-muted">
+        Apresente o QR Code na entrada de eventos oficiais para validação rápida da sua filiação
+        junto à Associação, FCK e CBK.
+      </p>
+    </app-card>
+  </div>
+} @else {
+  <p class="py-10 text-center text-fg-muted">Carregando carteira...</p>
+}

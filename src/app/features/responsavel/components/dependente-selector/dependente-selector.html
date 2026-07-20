@@ -1,0 +1,31 @@
+@if (store.dependentes().length > 1) {
+  <div class="flex gap-3 overflow-x-auto pb-1" role="tablist" aria-label="Selecionar dependente">
+    @for (dep of store.dependentes(); track dep.id) {
+      <button
+        type="button"
+        role="tab"
+        class="flex shrink-0 flex-col items-center gap-1"
+        [attr.aria-selected]="store.selectedId() === dep.id"
+        (click)="store.selectedId.set(dep.id)"
+      >
+        <span
+          class="grid h-12 w-12 place-items-center rounded-full text-lg font-bold text-white transition-all"
+          [class.ring-2]="store.selectedId() === dep.id"
+          [class.ring-offset-2]="store.selectedId() === dep.id"
+          [class.ring-belt-black]="store.selectedId() === dep.id"
+          [class.opacity-50]="store.selectedId() !== dep.id"
+          [style.backgroundColor]="cor(dep.beltColor)"
+        >
+          {{ inicial(dep.nome) }}
+        </span>
+        <span
+          class="max-w-16 truncate text-xs"
+          [class.font-semibold]="store.selectedId() === dep.id"
+          [class.text-fg-subtle]="store.selectedId() !== dep.id"
+        >
+          {{ dep.nome.split(' ')[0] }}
+        </span>
+      </button>
+    }
+  </div>
+}

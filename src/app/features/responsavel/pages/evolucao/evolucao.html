@@ -1,0 +1,52 @@
+<div class="animate-fade-in space-y-3">
+  <app-dependente-selector />
+
+  @if (dep(); as d) {
+    <!-- Notificação comemorativa de aptidão -->
+    @if (apto()) {
+      <div class="animate-pop rounded-xl border border-belt-green bg-belt-green/10 p-3 text-center">
+        <span class="flex justify-center text-belt-green"><app-icon name="award" [size]="30" /></span>
+        <p class="mt-1 font-bold text-belt-green">
+          {{ d.nome.split(' ')[0] }} está pronto(a) para a faixa {{ d.proximaFaixa?.label }}!
+        </p>
+        <p class="mt-1 text-sm text-fg-muted">
+          Concluiu a carga horária e a disciplina necessárias. Em breve, o convite para a graduação.
+        </p>
+      </div>
+    }
+
+    <!-- Progresso -->
+    <app-card>
+      <div class="mb-1 flex items-baseline justify-between text-sm">
+        <span class="font-medium">Evolução para {{ d.proximaFaixa?.label ?? 'faixa máxima' }}</span>
+        <span class="text-fg-muted">{{ d.progressoPercent }}%</span>
+      </div>
+      <app-progress-bar [percent]="d.progressoPercent" [beltColor]="d.beltColor" />
+      <p class="mt-2 text-xs text-fg-subtle">
+        Aqui o progresso considera presença, disciplina e foco — não só a técnica.
+      </p>
+    </app-card>
+
+    <!-- Feedbacks do Sensei -->
+    <app-card>
+      <h3 class="mb-3 font-semibold">Feedbacks do professor</h3>
+      @if (feedbacks().length) {
+        <ul class="space-y-2">
+          @for (f of feedbacks(); track f.id) {
+            <li class="rounded-xl border border-line p-3">
+              <div class="mb-1 flex items-center justify-between gap-2">
+                <app-alert-chip [tone]="feedbackTone(f.tag)" [label]="feedbackLabel(f.tag)" />
+                <span class="text-xs text-fg-subtle">{{ formatData(f.data) }}</span>
+              </div>
+              <p class="text-sm">{{ f.texto }}</p>
+            </li>
+          }
+        </ul>
+      } @else {
+        <p class="text-sm text-fg-muted">Ainda sem feedbacks registrados para este período.</p>
+      }
+    </app-card>
+  } @else {
+    <p class="py-10 text-center text-fg-muted">Carregando...</p>
+  }
+</div>

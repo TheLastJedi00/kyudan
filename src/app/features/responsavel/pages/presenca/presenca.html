@@ -1,0 +1,46 @@
+<div class="animate-fade-in space-y-3">
+  <app-dependente-selector />
+
+  <app-card>
+    <div class="mb-3 flex items-center justify-between">
+      <h2 class="font-semibold">{{ mesAno().label }}</h2>
+      <div class="flex gap-3 text-xs">
+        <span class="text-belt-green">● {{ presentes() }} presenças</span>
+        <span class="text-belt-red">● {{ faltas() }} faltas</span>
+      </div>
+    </div>
+
+    <!-- Cabeçalho de dias -->
+    <div class="grid grid-cols-7 gap-1 text-center text-[11px] font-semibold text-fg-subtle">
+      @for (d of diasSemana; track $index) {
+        <span>{{ d }}</span>
+      }
+    </div>
+
+    <!-- Grade -->
+    <div class="mt-1 grid grid-cols-7 gap-1">
+      @for (cel of grade(); track $index) {
+        <div class="aspect-square">
+          @if (cel.dia !== null) {
+            <div
+              class="grid h-full w-full place-items-center rounded-lg text-xs"
+              [class]="
+                cel.status === 'presente'
+                  ? 'bg-belt-green text-white font-bold'
+                  : cel.status === 'falta'
+                    ? 'bg-belt-red/15 text-belt-red font-bold'
+                    : 'text-fg-subtle'
+              "
+            >
+              {{ cel.dia }}
+            </div>
+          }
+        </div>
+      }
+    </div>
+
+    <p class="mt-3 text-xs text-fg-subtle">
+      Dias em verde confirmam que o treino ocorreu e o(a) dependente esteve presente.
+    </p>
+  </app-card>
+</div>

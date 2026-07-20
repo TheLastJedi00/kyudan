@@ -1,0 +1,40 @@
+<div class="flex min-h-dvh flex-col bg-bg text-fg">
+  <!-- Header -->
+  <header
+    class="sticky top-0 z-20 flex items-center gap-3 border-b border-line bg-surface/90 px-3 py-2.5 backdrop-blur"
+  >
+    <div class="flex min-w-0 flex-col leading-tight">
+      <span class="text-lg font-extrabold tracking-tight">KyuDan</span>
+      <span class="truncate text-xs text-fg-muted">{{ roleLabel() }}</span>
+    </div>
+
+    <div class="ml-auto flex items-center gap-2">
+      <!-- Troca de persona (login mocado do MVC) -->
+      <label class="sr-only" for="persona">Trocar persona</label>
+      <select
+        id="persona"
+        class="min-h-touch max-w-[10rem] rounded-lg border border-line bg-surface px-2 text-sm text-fg focus:outline-none focus:ring-2 focus:ring-belt-black/30 dark:focus:ring-white/20"
+        [value]="session.currentUser().id"
+        (change)="onPersonaChange($any($event.target).value)"
+      >
+        @for (grupo of session.personasByRole(); track grupo.role) {
+          <optgroup [label]="grupo.titulo">
+            @for (p of grupo.usuarios; track p.id) {
+              <option [value]="p.id">{{ p.nome }}</option>
+            }
+          </optgroup>
+        }
+      </select>
+
+      <app-theme-toggle />
+    </div>
+  </header>
+
+  <!-- Conteúdo roteado -->
+  <main class="mx-auto w-full max-w-3xl flex-1 px-3 pb-24 pt-3">
+    <router-outlet />
+  </main>
+
+  <!-- Navegação inferior (adaptada à role) -->
+  <app-bottom-nav [items]="navItems()" />
+</div>

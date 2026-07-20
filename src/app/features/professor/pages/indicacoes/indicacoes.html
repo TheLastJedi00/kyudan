@@ -1,0 +1,67 @@
+<div class="animate-fade-in space-y-3 pb-4">
+  <div>
+    <h2 class="text-lg font-bold leading-tight">Indicação ao exame</h2>
+    <p class="text-xs text-fg-subtle">Alunos que já cumpriram a carência de horas. Selecione os aptos tecnicamente.</p>
+  </div>
+
+  <!-- Seleção do exame -->
+  <app-card>
+    <label class="mb-1 block text-xs font-medium text-fg-muted" for="exame">Exame de destino</label>
+    <select
+      id="exame"
+      class="min-h-touch w-full rounded-lg border border-line bg-surface px-2 text-sm text-fg focus:outline-none focus:ring-2 focus:ring-belt-black/30 dark:focus:ring-white/20"
+      [value]="exameSelId()"
+      (change)="exameSelId.set($any($event.target).value)"
+    >
+      @for (e of exames(); track e.id) {
+        <option [value]="e.id">{{ e.titulo }} — {{ formatData(e.data) }}</option>
+      }
+    </select>
+  </app-card>
+
+  <!-- Lista de aptos -->
+  <ul class="space-y-2">
+    @for (a of aptos(); track a.id) {
+      <li>
+        <app-card [flush]="true">
+          <button
+            type="button"
+            class="flex min-h-touch w-full items-center gap-3 p-3 text-left"
+            (click)="toggle(a.id)"
+            [attr.aria-pressed]="selecionados().has(a.id)"
+          >
+            <span
+              class="grid h-6 w-6 shrink-0 place-items-center rounded-md border text-xs font-bold"
+              [class.border-belt-black]="selecionados().has(a.id)"
+              [class.bg-belt-black]="selecionados().has(a.id)"
+              [class.text-white]="selecionados().has(a.id)"
+              [class.border-line]="!selecionados().has(a.id)"
+            >
+              @if (selecionados().has(a.id)) { <app-icon name="check" [size]="14" /> }
+            </span>
+            <app-belt-badge [color]="a.beltColor" [size]="16" />
+            <div class="min-w-0 flex-1">
+              <p class="truncate font-medium leading-tight">{{ a.nome }}</p>
+              <p class="text-xs text-fg-subtle">
+                {{ a.horasAcumuladas }}h · próxima: {{ proximaFaixaLabel(a) }}
+              </p>
+            </div>
+          </button>
+        </app-card>
+      </li>
+    } @empty {
+      <li><app-card><p class="text-sm text-fg-muted">Nenhum aluno cumpriu a carência no momento.</p></app-card></li>
+    }
+  </ul>
+
+  <!-- Submeter (CTA Preto/Dan) -->
+  @if (aptos().length) {
+    <app-button variant="primary" [block]="true" [disabled]="!totalSel()" (press)="submeter()">
+      @if (enviado()) {
+        <app-icon name="check" [size]="16" /> Indicações enviadas
+      } @else {
+        Confirmar indicações{{ totalSel() ? ' (' + totalSel() + ')' : '' }}
+      }
+    </app-button>
+  }
+</div>

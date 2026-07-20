@@ -1,0 +1,81 @@
+<div class="animate-fade-in space-y-3">
+  <div class="flex items-center justify-between">
+    <h2 class="text-lg font-bold">Pólos</h2>
+    <app-button variant="secondary" (press)="mostrarForm.set(!mostrarForm())">
+      {{ mostrarForm() ? 'Cancelar' : '+ Novo pólo' }}
+    </app-button>
+  </div>
+
+  <!-- Cadastro -->
+  @if (mostrarForm()) {
+    <app-card>
+      <div class="animate-slide-down space-y-3">
+        <div>
+          <label class="mb-1 block text-xs font-medium text-fg-muted">Nome do local</label>
+          <input class="input" [ngModel]="nome()" (ngModelChange)="nome.set($event)" placeholder="Ex.: Ginásio Sebastião Cruz" />
+        </div>
+        <div>
+          <label class="mb-1 block text-xs font-medium text-fg-muted">Endereço</label>
+          <input class="input" [ngModel]="endereco()" (ngModelChange)="endereco.set($event)" placeholder="Rua, número — bairro" />
+        </div>
+        <div>
+          <label class="mb-1 block text-xs font-medium text-fg-muted">Capacidade máxima</label>
+          <input type="number" class="input" [ngModel]="capacidade()" (ngModelChange)="capacidade.set(+$event)" />
+        </div>
+        <app-button variant="primary" [block]="true" [disabled]="!nome().trim()" (press)="cadastrar()">
+          Cadastrar pólo
+        </app-button>
+      </div>
+    </app-card>
+  }
+
+  <!-- Lista -->
+  @for (p of store.polos(); track p.id) {
+    <app-card [flush]="true">
+      <button type="button" class="flex w-full items-center gap-3 p-4 text-left" (click)="toggleExpand(p.id)">
+        <div class="min-w-0 flex-1">
+          <p class="font-semibold leading-tight">{{ p.nome }}</p>
+          <p class="text-xs text-fg-subtle">{{ p.endereco }}</p>
+          <p class="mt-1 text-xs text-fg-muted">
+            Cap. {{ p.capacidadeMaxima }} · {{ store.turmasDoPolo(p.id).length }} turmas ·
+            {{ p.senseiIds.length }} sensei(s)
+          </p>
+        </div>
+        <app-icon name="chevron" [size]="18" [class.rotate-90]="expandido() === p.id" />
+      </button>
+
+      @if (expandido() === p.id) {
+        <div class="animate-slide-down space-y-3 border-t border-line p-4">
+          <!-- Senseis alocados -->
+          <div>
+            <p class="mb-1 text-xs font-semibold uppercase tracking-wide text-fg-subtle">Senseis</p>
+            @if (p.senseiIds.length) {
+              <div class="flex flex-wrap gap-1.5">
+                @for (sid of p.senseiIds; track sid) {
+                  <span class="rounded-full bg-surface-muted px-2 py-1 text-xs font-medium">{{ store.senseiNome(sid) }}</span>
+                }
+              </div>
+            } @else {
+              <p class="text-xs text-fg-muted">Nenhum sensei alocado.</p>
+            }
+          </div>
+
+          <!-- Relatório de turmas -->
+          <div>
+            <p class="mb-1 text-xs font-semibold uppercase tracking-wide text-fg-subtle">Turmas (diário de classe)</p>
+            <ul class="space-y-1.5">
+              @for (t of store.turmasDoPolo(p.id); track t.id) {
+                <li class="flex items-center justify-between rounded-lg bg-surface-muted px-3 py-2 text-sm">
+                  <span>{{ t.nome }} · {{ store.senseiNome(t.senseiId) }}</span>
+                  <span class="text-xs text-fg-muted">{{ t.alunoIds.length }} alunos</span>
+                </li>
+              } @empty {
+                <li class="text-xs text-fg-muted">Sem turmas cadastradas.</li>
+              }
+            </ul>
+          </div>
+        </div>
+      }
+    </app-card>
+  }
+</div>
