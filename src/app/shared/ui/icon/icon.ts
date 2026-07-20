@@ -85,6 +85,18 @@ import { NgSwitch, NgSwitchCase, NgSwitchDefault } from '@angular/common';
           <path d="M12 10v4M12 17h.01" />
         </g>
         <path *ngSwitchCase="'chevron'" d="M9 6l6 6-6 6" />
+        <path *ngSwitchCase="'x'" d="M6 6l12 12M18 6L6 18" />
+        <g *ngSwitchCase="'medal'">
+          <path d="M8 3l2 6M16 3l-2 6" />
+          <circle cx="12" cy="15" r="6" />
+          <path d="M12 12.5l1 2 2 .3-1.5 1.4.4 2-1.9-1-1.9 1 .4-2L9 14.8l2-.3z" />
+        </g>
+        <g *ngSwitchCase="'award'">
+          <circle cx="12" cy="9" r="6" />
+          <path d="M12 6.2l1.3 2.6 2.9.4-2.1 2 .5 2.9L12 14.8l-2.6 1.3.5-2.9-2.1-2 2.9-.4z" />
+          <path d="M9 14.5 7.5 21l4.5-2.2L16.5 21 15 14.5" />
+        </g>
+        <circle *ngSwitchCase="'dot'" cx="12" cy="12" r="3.5" fill="currentColor" stroke="none" />
         <path *ngSwitchDefault d="M12 5v14M5 12h14" />
       </ng-container>
     </svg>
