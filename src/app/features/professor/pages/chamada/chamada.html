@@ -1,0 +1,79 @@
+<div class="animate-fade-in space-y-4 pb-4">
+  <!-- Cabeçalho -->
+  <div class="flex items-center gap-2">
+    <a routerLink="/professor" class="grid min-h-touch min-w-touch place-items-center rounded-lg text-fg-muted hover:bg-surface-muted" aria-label="Voltar">
+      <app-icon name="chevron" [size]="20" class="rotate-180" />
+    </a>
+    <div class="min-w-0">
+      <h2 class="truncate text-lg font-bold leading-tight">{{ turma()?.nome ?? 'Turma' }}</h2>
+      <p class="text-xs text-fg-subtle">{{ hojeLabel }} · {{ presentesCount() }}/{{ alunos().length }} presentes</p>
+    </div>
+  </div>
+
+  <app-button variant="secondary" [block]="true" (press)="marcarTodos()">
+    Marcar todos como presentes
+  </app-button>
+
+  <!-- Lista de alunos -->
+  <ul class="space-y-2.5">
+    @for (aluno of alunos(); track aluno.id) {
+      <li>
+        <app-card [flush]="true">
+          <div class="flex items-stretch">
+            <!-- Área grande de toque = alterna presença -->
+            <button
+              type="button"
+              class="flex flex-1 items-center gap-3 rounded-l-2xl p-3 text-left transition-colors"
+              [class.bg-belt-green]="presencas()[aluno.id]"
+              [class.text-white]="presencas()[aluno.id]"
+              (click)="toggle(aluno.id)"
+              [attr.aria-pressed]="presencas()[aluno.id]"
+            >
+              <app-belt-badge [color]="aluno.beltColor" [size]="16" />
+              <div class="min-w-0 flex-1">
+                <p class="truncate font-semibold leading-tight">{{ aluno.nome }}</p>
+                @if (aluno.alertas.length) {
+                  <div class="mt-1 flex flex-wrap gap-1">
+                    @for (al of aluno.alertas; track al) {
+                      <span
+                        class="inline-flex items-center gap-0.5 rounded-full px-1.5 py-0.5 text-[10px] font-semibold"
+                        [class]="presencas()[aluno.id] ? 'bg-white/20 text-white' : 'bg-belt-red/10 text-belt-red'"
+                      >
+                        <app-icon [name]="alertaChip(al).icon" [size]="11" />
+                        {{ alertaChip(al).label }}
+                      </span>
+                    }
+                  </div>
+                }
+              </div>
+              <span
+                class="grid h-9 w-9 shrink-0 place-items-center rounded-full border text-sm font-bold"
+                [class.border-white]="presencas()[aluno.id]"
+                [class.border-line]="!presencas()[aluno.id]"
+                [class.text-fg-subtle]="!presencas()[aluno.id]"
+              >
+                {{ presencas()[aluno.id] ? '✓' : '' }}
+              </span>
+            </button>
+
+            <!-- Atalho para o perfil (currículo / diário) -->
+            <a
+              [routerLink]="['/professor/aluno', aluno.id]"
+              class="grid w-12 shrink-0 place-items-center border-l border-line text-fg-subtle hover:bg-surface-muted"
+              aria-label="Ver perfil do aluno"
+            >
+              <app-icon name="chevron" [size]="18" />
+            </a>
+          </div>
+        </app-card>
+      </li>
+    } @empty {
+      <li><app-card><p class="text-sm text-fg-muted">Turma sem alunos cadastrados.</p></app-card></li>
+    }
+  </ul>
+
+  <!-- Salvar (CTA Preto/Dan) -->
+  <app-button variant="primary" [block]="true" (press)="salvar()">
+    {{ salvo() ? 'Chamada salva ✓' : 'Salvar chamada' }}
+  </app-button>
+</div>
