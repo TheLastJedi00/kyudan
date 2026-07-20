@@ -1,0 +1,33 @@
+<div class="animate-fade-in space-y-4">
+  <app-card>
+    <p class="text-xs text-fg-muted">Total em aberto</p>
+    <p class="text-2xl font-bold" [class.text-belt-red]="totalAberto() > 0">
+      {{ formatBRL(totalAberto()) }}
+    </p>
+  </app-card>
+
+  @for (f of faturas(); track f.id) {
+    <app-card>
+      <div class="flex items-start justify-between gap-3">
+        <div class="min-w-0">
+          <p class="font-medium leading-tight">{{ f.descricao }}</p>
+          <p class="text-xs text-fg-subtle">Vence em {{ formatData(f.vencimento) }}</p>
+          <p class="mt-1 text-lg font-bold">{{ formatBRL(f.valor) }}</p>
+        </div>
+        <app-alert-chip [tone]="tone(f.status)" [label]="statusLabel(f.status)" />
+      </div>
+
+      @if (f.status !== 'paga' && f.pixCopiaCola) {
+        <div class="mt-3">
+          <app-button variant="primary" [block]="true" (press)="copiarPix(f)">
+            {{ copiado() === f.id ? 'Código PIX copiado ✓' : 'Copiar código PIX' }}
+          </app-button>
+        </div>
+      }
+    </app-card>
+  } @empty {
+    <app-card>
+      <p class="text-sm text-fg-muted">Nenhuma fatura por aqui. Tudo em dia! ✅</p>
+    </app-card>
+  }
+</div>
