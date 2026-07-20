@@ -8,6 +8,16 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Componentes utilitários reutilizáveis */
+@layer components {
+  .input {
+    @apply min-h-touch w-full rounded-lg border border-line bg-surface px-3 text-sm text-fg placeholder:text-fg-subtle focus:outline-none focus:ring-2 focus:ring-belt-black/30;
+  }
+  .dark .input {
+    @apply focus:ring-white/20;
+  }
+}
+
 /* --------------------------------------------------------------------------
    Design tokens de superfície e tipografia (tematizáveis)
    Valores em canais RGB para compor com <alpha-value> no Tailwind.
@@ -47,6 +57,74 @@ body {
   @apply bg-bg text-fg font-sans antialiased;
   margin: 0;
   transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+/* --------------------------------------------------------------------------
+   Animações reutilizáveis (keyframes puros — animação fora do TypeScript).
+   Aplicar via classes utilitárias diretamente no HTML.
+   -------------------------------------------------------------------------- */
+@keyframes kd-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes kd-slide-down {
+  from {
+    opacity: 0;
+    max-height: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    max-height: 40rem;
+    transform: translateY(0);
+  }
+}
+
+@keyframes kd-fade-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes kd-pop {
+  0% {
+    transform: scale(0.85);
+    opacity: 0;
+  }
+  60% {
+    transform: scale(1.04);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.animate-fade-in {
+  animation: kd-fade-in 0.28s ease-out both;
+}
+
+.animate-slide-down {
+  animation: kd-slide-down 0.3s ease-out both;
+  overflow: hidden;
+}
+
+.animate-fade-out {
+  animation: kd-fade-out 0.2s ease-in both;
+}
+
+.animate-pop {
+  animation: kd-pop 0.35s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
 /* Respeita usuários com preferência por menos movimento */

@@ -2,6 +2,12 @@
 module.exports = {
   content: ['./src/**/*.{html,ts}'],
   darkMode: 'class',
+  // Classes de faixa montadas dinamicamente (ex.: `text-belt-${cor}`) — garante geração.
+  safelist: [
+    {
+      pattern: /(bg|text|border|ring)-belt-(white|yellow|red|orange|green|purple|brown|black)/,
+    },
+  ],
   theme: {
     extend: {
       colors: {
