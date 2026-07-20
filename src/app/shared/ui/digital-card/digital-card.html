@@ -1,0 +1,38 @@
+<div class="overflow-hidden rounded-2xl border border-line bg-surface shadow-sm">
+  <!-- Faixa de destaque na cor da graduação -->
+  <div class="h-2 w-full" [style.backgroundColor]="accent()"></div>
+
+  <div class="flex items-start gap-4 p-4">
+    <!-- Avatar (inicial) -->
+    <div
+      class="grid h-14 w-14 shrink-0 place-items-center rounded-full text-xl font-bold text-white"
+      [style.backgroundColor]="accent()"
+    >
+      {{ inicial() }}
+    </div>
+
+    <div class="min-w-0 flex-1">
+      <p class="text-[11px] uppercase tracking-wide text-fg-subtle">Associação Blumenauense de Karatê</p>
+      <h3 class="truncate text-lg font-bold leading-tight">{{ nome() }}</h3>
+      <p class="text-xs text-fg-muted">Matrícula {{ matricula() }} · {{ faixaLabel() }}</p>
+
+      <dl class="mt-2 flex gap-3">
+        @for (row of filiacaoRows(); track row.sigla) {
+          <div class="text-center">
+            <dt class="text-[10px] font-medium text-fg-subtle">{{ row.sigla }}</dt>
+            <dd class="text-xs font-bold" [class]="statusTone(row.status)">
+              {{ statusLabel(row.status) }}
+            </dd>
+          </div>
+        }
+      </dl>
+    </div>
+
+    <!-- QR decorativo -->
+    <div class="grid shrink-0 grid-cols-12 gap-px rounded-md bg-white p-1" style="width: 60px; height: 60px">
+      @for (on of qr(); track $index) {
+        <span class="aspect-square" [class.bg-belt-black]="on"></span>
+      }
+    </div>
+  </div>
+</div>
