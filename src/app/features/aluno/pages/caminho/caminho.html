@@ -1,0 +1,94 @@
+@if (aluno(); as a) {
+  <div class="animate-fade-in space-y-4">
+    <!-- Faixa atual + progresso -->
+    <app-card>
+      <div class="flex items-center gap-3">
+        <span
+          class="h-10 w-10 shrink-0 rounded-full ring-1 ring-line"
+          [style.backgroundColor]="accent()"
+        ></span>
+        <div class="min-w-0">
+          <p class="text-xs text-fg-muted">Faixa atual</p>
+          <h2 class="text-xl font-bold leading-tight">{{ a.faixaAtual.label }}</h2>
+          <p class="text-xs text-fg-subtle">{{ a.faixaAtual.grade }}</p>
+        </div>
+      </div>
+
+      <div class="mt-4">
+        <app-belt-shelf [current]="a.beltColor" />
+      </div>
+
+      @if (a.proximaFaixa; as prox) {
+        <div class="mt-5">
+          <div class="mb-1 flex items-baseline justify-between text-sm">
+            <span class="font-medium">Rumo à faixa {{ prox.label }}</span>
+            <span class="text-fg-muted">{{ a.horasAcumuladas }}/{{ a.faixaAtual.requiredHours }}h</span>
+          </div>
+          <app-progress-bar [percent]="a.progressoPercent" [beltColor]="a.beltColor" />
+          <p class="mt-1 text-xs text-fg-subtle">{{ a.progressoPercent }}% das horas-aula concluídas</p>
+        </div>
+      } @else {
+        <p class="mt-4 text-sm font-medium text-fg-muted">Graduação máxima alcançada. Oss! 🥋</p>
+      }
+    </app-card>
+
+    <!-- Próximo exame -->
+    @if (proximoExame(); as exame) {
+      <app-card>
+        <div class="flex items-center justify-between gap-3">
+          <div class="min-w-0">
+            <p class="text-xs text-fg-muted">Próximo exame de graduação</p>
+            <h3 class="truncate font-semibold">{{ exame.titulo }}</h3>
+            <p class="text-xs text-fg-subtle">{{ formatData(exame.data) }} · {{ exame.local }}</p>
+            <p class="mt-1 text-xs text-fg-muted">
+              Taxa {{ formatBRL(exame.taxaInscricao) }} · inscrições até {{ formatData(exame.dataLimitePagamento) }}
+            </p>
+          </div>
+          <app-alert-chip tone="info" [label]="formatData(exame.data)" icon="calendar" />
+        </div>
+        <div class="mt-3">
+          <app-button variant="primary" [block]="true" [disabled]="inscrito()" (press)="inscrever()">
+            {{ inscrito() ? 'Inscrição enviada ✓' : 'Inscrever-se no exame' }}
+          </app-button>
+        </div>
+      </app-card>
+    }
+
+    <!-- Currículo técnico -->
+    <app-card>
+      <div class="mb-3 flex items-center justify-between">
+        <h3 class="font-semibold">Currículo técnico</h3>
+        <span class="text-xs text-fg-muted">{{ dominados() }}/{{ a.curriculo.length }} dominados</span>
+      </div>
+
+      <div class="space-y-4">
+        @for (grupo of grupos(); track grupo.titulo) {
+          <div>
+            <p class="mb-1.5 text-xs font-semibold uppercase tracking-wide text-fg-subtle">
+              {{ grupo.titulo }}
+            </p>
+            <ul class="space-y-1.5">
+              @for (item of grupo.itens; track trackItem($index, item)) {
+                <li class="flex items-center gap-2 text-sm">
+                  <span
+                    class="grid h-5 w-5 shrink-0 place-items-center rounded-full text-[11px]"
+                    [class.bg-belt-green]="item.dominado"
+                    [class.text-white]="item.dominado"
+                    [class.bg-surface-muted]="!item.dominado"
+                    [class.text-fg-subtle]="!item.dominado"
+                  >
+                    @if (item.dominado) { ✓ } @else { • }
+                  </span>
+                  <span [class.text-fg-muted]="!item.dominado">{{ item.nome }}</span>
+                </li>
+              }
+            </ul>
+          </div>
+        }
+      </div>
+      <p class="mt-3 text-xs text-fg-subtle">Marcações feitas pelo Sensei durante os treinos.</p>
+    </app-card>
+  </div>
+} @else {
+  <p class="py-10 text-center text-fg-muted">Carregando seu caminho...</p>
+}
