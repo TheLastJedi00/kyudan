@@ -1,7 +1,7 @@
 <div class="flex min-h-dvh flex-col bg-bg text-fg">
   <!-- Header -->
   <header
-    class="sticky top-0 z-20 flex items-center gap-3 border-b border-line bg-surface/90 px-4 py-3 backdrop-blur"
+    class="sticky top-0 z-20 flex items-center gap-3 border-b border-line bg-surface/90 px-3 py-2.5 backdrop-blur"
   >
     <div class="flex min-w-0 flex-col leading-tight">
       <span class="text-lg font-extrabold tracking-tight">KyuDan</span>
@@ -22,43 +22,15 @@
         }
       </select>
 
-      <!-- Alternância de tema -->
-      <button
-        type="button"
-        class="grid min-h-touch min-w-touch place-items-center rounded-lg border border-line bg-surface text-fg transition-colors hover:bg-surface-muted"
-        [attr.aria-label]="theme.mode() === 'dark' ? 'Ativar tema claro' : 'Ativar tema escuro'"
-        (click)="theme.toggle()"
-      >
-        <app-icon [name]="theme.mode() === 'dark' ? 'sun' : 'moon'" [size]="20" />
-      </button>
+      <app-theme-toggle />
     </div>
   </header>
 
   <!-- Conteúdo roteado -->
-  <main class="mx-auto w-full max-w-3xl flex-1 px-4 pb-28 pt-4">
+  <main class="mx-auto w-full max-w-3xl flex-1 px-3 pb-24 pt-3">
     <router-outlet />
   </main>
 
   <!-- Navegação inferior (adaptada à role) -->
-  <nav
-    class="fixed inset-x-0 bottom-0 z-20 border-t border-line bg-surface/95 backdrop-blur"
-    aria-label="Navegação principal"
-  >
-    <ul class="mx-auto flex max-w-3xl items-stretch justify-around">
-      @for (item of navItems(); track item.path) {
-        <li class="flex-1">
-          <a
-            [routerLink]="item.path"
-            routerLinkActive="text-fg"
-            [routerLinkActiveOptions]="{ exact: item.path.split('/').length <= 2 }"
-            #rla="routerLinkActive"
-            class="flex min-h-touch flex-col items-center justify-center gap-0.5 py-2 text-fg-subtle transition-colors"
-          >
-            <app-icon [name]="item.icon" [size]="22" />
-            <span class="text-[11px] font-medium" [class.font-bold]="rla.isActive">{{ item.label }}</span>
-          </a>
-        </li>
-      }
-    </ul>
-  </nav>
+  <app-bottom-nav [items]="navItems()" />
 </div>

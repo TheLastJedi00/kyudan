@@ -1,8 +1,12 @@
-<div class="animate-fade-in space-y-4 pb-4">
+<div class="animate-fade-in space-y-3 pb-4">
   <div class="flex items-center justify-between">
     <h2 class="text-lg font-bold">Filiações</h2>
     <app-button variant="secondary" (press)="exportar()">
-      {{ exportado() ? 'Relatório gerado ✓' : 'Exportar / Compartilhar' }}
+      @if (exportado()) {
+        <app-icon name="check" [size]="15" /> Relatório gerado
+      } @else {
+        Exportar / Compartilhar
+      }
     </app-button>
   </div>
   @if (exportado()) {
@@ -45,7 +49,7 @@
                   : 'border-line'
               "
             >
-              {{ selecionados().has(a.id) ? '✓' : '' }}
+              @if (selecionados().has(a.id)) { <app-icon name="check" [size]="14" /> }
             </span>
             <div class="min-w-0 flex-1">
               <p class="truncate font-medium leading-tight">{{ a.nome }}</p>
@@ -66,6 +70,10 @@
 
   <!-- Notificação em lote (CTA Preto) -->
   <app-button variant="primary" [block]="true" [disabled]="!totalSel()" (press)="notificar()">
-    {{ notificados() ? 'Cobranças enviadas ✓' : 'Cobrar anuidade' + (totalSel() ? ' (' + totalSel() + ')' : '') }}
+    @if (notificados()) {
+      <app-icon name="check" [size]="16" /> Cobranças enviadas
+    } @else {
+      Cobrar anuidade{{ totalSel() ? ' (' + totalSel() + ')' : '' }}
+    }
   </app-button>
 </div>

@@ -1,5 +1,5 @@
 @if (aluno(); as a) {
-  <div class="animate-fade-in space-y-4">
+  <div class="animate-fade-in space-y-3">
     <!-- Faixa atual + progresso -->
     <app-card>
       <div class="flex items-center gap-3">
@@ -28,7 +28,7 @@
           <p class="mt-1 text-xs text-fg-subtle">{{ a.progressoPercent }}% das horas-aula concluídas</p>
         </div>
       } @else {
-        <p class="mt-4 text-sm font-medium text-fg-muted">Graduação máxima alcançada. Oss! 🥋</p>
+        <p class="mt-4 text-sm font-medium text-fg-muted">Graduação máxima alcançada. Oss!</p>
       }
     </app-card>
 
@@ -48,7 +48,11 @@
         </div>
         <div class="mt-3">
           <app-button variant="primary" [block]="true" [disabled]="inscrito()" (press)="inscrever()">
-            {{ inscrito() ? 'Inscrição enviada ✓' : 'Inscrever-se no exame' }}
+            @if (inscrito()) {
+              <app-icon name="check" [size]="16" /> Inscrição enviada
+            } @else {
+              Inscrever-se no exame
+            }
           </app-button>
         </div>
       </app-card>
@@ -61,7 +65,7 @@
         <span class="text-xs text-fg-muted">{{ dominados() }}/{{ a.curriculo.length }} dominados</span>
       </div>
 
-      <div class="space-y-4">
+      <div class="space-y-3">
         @for (grupo of grupos(); track grupo.titulo) {
           <div>
             <p class="mb-1.5 text-xs font-semibold uppercase tracking-wide text-fg-subtle">
@@ -77,7 +81,7 @@
                     [class.bg-surface-muted]="!item.dominado"
                     [class.text-fg-subtle]="!item.dominado"
                   >
-                    @if (item.dominado) { ✓ } @else { • }
+                    <app-icon [name]="item.dominado ? 'check' : 'dot'" [size]="item.dominado ? 12 : 7" />
                   </span>
                   <span [class.text-fg-muted]="!item.dominado">{{ item.nome }}</span>
                 </li>

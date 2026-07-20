@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
 import { ResponsavelStore } from '../../responsavel-store';
 import { DependenteSelector } from '../../components/dependente-selector/dependente-selector';
-import { AppCard, ProgressBar, AlertChip, ChipTone } from '../../../../shared/ui';
+import { AppCard, ProgressBar, AlertChip, ChipTone, Icon } from '../../../../shared/ui';
 import { Ocorrencia } from '../../../../core/models';
 import { formatDataBR } from '../../../../shared/util/format';
 
@@ -9,7 +9,7 @@ import { formatDataBR } from '../../../../shared/util/format';
 @Component({
   selector: 'app-evolucao',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [DependenteSelector, AppCard, ProgressBar, AlertChip],
+  imports: [DependenteSelector, AppCard, ProgressBar, AlertChip, Icon],
   templateUrl: './evolucao.html',
   styleUrl: './evolucao.scss',
 })

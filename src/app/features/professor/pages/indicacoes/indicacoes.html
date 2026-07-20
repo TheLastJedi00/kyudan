@@ -1,4 +1,4 @@
-<div class="animate-fade-in space-y-4 pb-4">
+<div class="animate-fade-in space-y-3 pb-4">
   <div>
     <h2 class="text-lg font-bold leading-tight">Indicação ao exame</h2>
     <p class="text-xs text-fg-subtle">Alunos que já cumpriram a carência de horas. Selecione os aptos tecnicamente.</p>
@@ -37,7 +37,7 @@
               [class.text-white]="selecionados().has(a.id)"
               [class.border-line]="!selecionados().has(a.id)"
             >
-              {{ selecionados().has(a.id) ? '✓' : '' }}
+              @if (selecionados().has(a.id)) { <app-icon name="check" [size]="14" /> }
             </span>
             <app-belt-badge [color]="a.beltColor" [size]="16" />
             <div class="min-w-0 flex-1">
@@ -58,7 +58,7 @@
   @if (aptos().length) {
     <app-button variant="primary" [block]="true" [disabled]="!totalSel()" (press)="submeter()">
       @if (enviado()) {
-        Indicações enviadas ✓
+        <app-icon name="check" [size]="16" /> Indicações enviadas
       } @else {
         Confirmar indicações{{ totalSel() ? ' (' + totalSel() + ')' : '' }}
       }

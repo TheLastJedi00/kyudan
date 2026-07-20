@@ -1,4 +1,4 @@
-<div class="animate-fade-in space-y-4">
+<div class="animate-fade-in space-y-3">
   <app-dependente-selector />
 
   <!-- Ação pendente em destaque (CTA Preto) -->
@@ -10,7 +10,11 @@
       <div class="mt-3">
         @if (acao.tipo === 'financeiro') {
           <app-button variant="primary" [block]="true" routerLink="/responsavel" [disabled]="resolvido()" (press)="resolvido.set(true)">
-            {{ resolvido() ? 'Pagamento em processamento ✓' : 'Pagar agora' }}
+            @if (resolvido()) {
+              <app-icon name="check" [size]="16" /> Pagamento em processamento
+            } @else {
+              Pagar agora
+            }
           </app-button>
         } @else {
           <app-button variant="primary" [block]="true" routerLink="/responsavel/autorizacoes">
@@ -21,7 +25,7 @@
     </app-card>
   } @else {
     <app-card>
-      <p class="text-sm text-fg-muted">Tudo em dia por aqui. Bons treinos! 🥋</p>
+      <p class="text-sm text-fg-muted">Tudo em dia por aqui. Bons treinos.</p>
     </app-card>
   }
 
@@ -47,10 +51,16 @@
     </ul>
     @if (store.totalAberto() > 0) {
       <app-button variant="primary" [block]="true" [disabled]="resolvido()" (press)="resolvido.set(true)">
-        {{ resolvido() ? 'Pagamento em processamento ✓' : 'Pagar tudo em uma transação' }}
+        @if (resolvido()) {
+          <app-icon name="check" [size]="16" /> Pagamento em processamento
+        } @else {
+          Pagar tudo em uma transação
+        }
       </app-button>
     } @else {
-      <p class="text-sm text-fg-muted">Nenhuma pendência financeira. ✅</p>
+      <p class="flex items-center gap-1.5 text-sm text-fg-muted">
+        <app-icon name="check" [size]="16" class="text-belt-green" /> Nenhuma pendência financeira.
+      </p>
     }
   </app-card>
 

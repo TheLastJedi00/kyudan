@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { AlunoStore } from '../../aluno-store';
 import { BELT_HEX } from '../../../../shared/ui/belt-colors';
-import { AppCard, BeltShelf, ProgressBar, AlertChip, Button } from '../../../../shared/ui';
+import { AppCard, BeltShelf, ProgressBar, AlertChip, Button, Icon } from '../../../../shared/ui';
 import { CurriculoItem } from '../../../../core/models';
 import { formatDataBR, formatBRL } from '../../../../shared/util/format';
 
@@ -9,7 +9,7 @@ import { formatDataBR, formatBRL } from '../../../../shared/util/format';
 @Component({
   selector: 'app-caminho',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [AppCard, BeltShelf, ProgressBar, AlertChip, Button],
+  imports: [AppCard, BeltShelf, ProgressBar, AlertChip, Button, Icon],
   templateUrl: './caminho.html',
   styleUrl: './caminho.scss',
 })

@@ -1,4 +1,4 @@
-<div class="animate-fade-in space-y-4">
+<div class="animate-fade-in space-y-3">
   <app-card>
     <p class="text-xs text-fg-muted">Total em aberto</p>
     <p class="text-2xl font-bold" [class.text-belt-red]="totalAberto() > 0">
@@ -20,14 +20,20 @@
       @if (f.status !== 'paga' && f.pixCopiaCola) {
         <div class="mt-3">
           <app-button variant="primary" [block]="true" (press)="copiarPix(f)">
-            {{ copiado() === f.id ? 'Código PIX copiado ✓' : 'Copiar código PIX' }}
+            @if (copiado() === f.id) {
+              <app-icon name="check" [size]="16" /> Código PIX copiado
+            } @else {
+              Copiar código PIX
+            }
           </app-button>
         </div>
       }
     </app-card>
   } @empty {
     <app-card>
-      <p class="text-sm text-fg-muted">Nenhuma fatura por aqui. Tudo em dia! ✅</p>
+      <p class="flex items-center gap-1.5 text-sm text-fg-muted">
+        <app-icon name="check" [size]="16" class="text-belt-green" /> Nenhuma fatura por aqui. Tudo em dia.
+      </p>
     </app-card>
   }
 </div>

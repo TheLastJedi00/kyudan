@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
 import { AlunoStore } from '../../aluno-store';
-import { AppCard, BeltBadge } from '../../../../shared/ui';
+import { AppCard, BeltBadge, Icon } from '../../../../shared/ui';
 import { BeltLineageService } from '../../../../core/services/belt-lineage.service';
 import { formatDataBR } from '../../../../shared/util/format';
 
@@ -8,7 +8,7 @@ import { formatDataBR } from '../../../../shared/util/format';
 @Component({
   selector: 'app-cartel',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [AppCard, BeltBadge],
+  imports: [AppCard, BeltBadge, Icon],
   templateUrl: './cartel.html',
   styleUrl: './cartel.scss',
 })
@@ -28,7 +28,8 @@ export class Cartel {
 
   protected readonly formatData = formatDataBR;
 
-  protected medalha(m?: 'ouro' | 'prata' | 'bronze'): string {
-    return m === 'ouro' ? '🥇' : m === 'prata' ? '🥈' : m === 'bronze' ? '🥉' : '🎖️';
+  /** Cor da medalha conforme a colocação (usada no ícone `medal`). */
+  protected medalCor(m?: 'ouro' | 'prata' | 'bronze'): string {
+    return m === 'ouro' ? '#EAB308' : m === 'prata' ? '#9CA3AF' : m === 'bronze' ? '#B45309' : '#6B7280';
   }
 }

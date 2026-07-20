@@ -1,4 +1,4 @@
-<div class="animate-fade-in space-y-4">
+<div class="animate-fade-in space-y-3">
   <app-dependente-selector />
 
   <p class="text-sm text-fg-muted">
@@ -43,7 +43,9 @@
       <input type="file" accept="image/*,application/pdf" capture="environment" class="hidden" (change)="onArquivo($event)" />
     </label>
     @if (docEnviado()) {
-      <p class="mt-2 text-xs font-medium text-belt-green">Documento recebido ✓</p>
+      <p class="mt-2 flex items-center gap-1 text-xs font-medium text-belt-green">
+        <app-icon name="check" [size]="13" /> Documento recebido
+      </p>
     }
   </app-card>
 </div>

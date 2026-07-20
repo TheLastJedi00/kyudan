@@ -1,11 +1,11 @@
-<div class="animate-fade-in space-y-4">
+<div class="animate-fade-in space-y-3">
   <app-dependente-selector />
 
   @if (dep(); as d) {
     <!-- Notificação comemorativa de aptidão -->
     @if (apto()) {
-      <div class="animate-pop rounded-2xl border border-belt-green bg-belt-green/10 p-4 text-center">
-        <p class="text-2xl">🎉🥋</p>
+      <div class="animate-pop rounded-xl border border-belt-green bg-belt-green/10 p-3 text-center">
+        <span class="flex justify-center text-belt-green"><app-icon name="award" [size]="30" /></span>
         <p class="mt-1 font-bold text-belt-green">
           {{ d.nome.split(' ')[0] }} está pronto(a) para a faixa {{ d.proximaFaixa?.label }}!
         </p>

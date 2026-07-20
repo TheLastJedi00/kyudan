@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { AlunoStore } from '../../aluno-store';
-import { AppCard, AlertChip, Button, ChipTone } from '../../../../shared/ui';
+import { AppCard, AlertChip, Button, ChipTone, Icon } from '../../../../shared/ui';
 import { Fatura, FaturaStatus } from '../../../../core/models';
 import { formatBRL, formatDataBR } from '../../../../shared/util/format';
 
@@ -8,7 +8,7 @@ import { formatBRL, formatDataBR } from '../../../../shared/util/format';
 @Component({
   selector: 'app-financeiro',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [AppCard, AlertChip, Button],
+  imports: [AppCard, AlertChip, Button, Icon],
   templateUrl: './financeiro.html',
   styleUrl: './financeiro.scss',
 })

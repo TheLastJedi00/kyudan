@@ -1,4 +1,4 @@
-<div class="animate-fade-in space-y-4 pb-4">
+<div class="animate-fade-in space-y-3 pb-4">
   <!-- Cabeçalho -->
   <div class="flex items-center gap-2">
     <a routerLink="/professor" class="grid min-h-touch min-w-touch place-items-center rounded-lg text-fg-muted hover:bg-surface-muted" aria-label="Voltar">
@@ -52,7 +52,9 @@
                 [class.border-line]="!presencas()[aluno.id]"
                 [class.text-fg-subtle]="!presencas()[aluno.id]"
               >
-                {{ presencas()[aluno.id] ? '✓' : '' }}
+                @if (presencas()[aluno.id]) {
+                  <app-icon name="check" [size]="18" />
+                }
               </span>
             </button>
 
@@ -74,6 +76,10 @@
 
   <!-- Salvar (CTA Preto/Dan) -->
   <app-button variant="primary" [block]="true" (press)="salvar()">
-    {{ salvo() ? 'Chamada salva ✓' : 'Salvar chamada' }}
+    @if (salvo()) {
+      <app-icon name="check" [size]="16" /> Chamada salva
+    } @else {
+      Salvar chamada
+    }
   </app-button>
 </div>

@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { GestaoStore } from '../../gestao-store';
-import { AppCard, Button, ChipTone } from '../../../../shared/ui';
+import { AppCard, Button, ChipTone, Icon } from '../../../../shared/ui';
 import { Aluno, FiliacaoStatus } from '../../../../core/models';
 
 type Filtro = 'todos' | 'irregular' | 'regular';
@@ -9,7 +9,7 @@ type Filtro = 'todos' | 'irregular' | 'regular';
 @Component({
   selector: 'app-filiacoes',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [AppCard, Button],
+  imports: [AppCard, Button, Icon],
   templateUrl: './filiacoes.html',
   styleUrl: './filiacoes.scss',
 })

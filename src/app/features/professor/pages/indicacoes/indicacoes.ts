@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@a
 import { ProfessorStore } from '../../professor-store';
 import { SessionService } from '../../../../core/services/session.service';
 import { BeltLineageService } from '../../../../core/services/belt-lineage.service';
-import { AppCard, BeltBadge, Button } from '../../../../shared/ui';
+import { AppCard, BeltBadge, Button, Icon } from '../../../../shared/ui';
 import { Aluno, Exame, IndicacaoExame } from '../../../../core/models';
 import { formatDataBR, hojeISO } from '../../../../shared/util/format';
 
@@ -10,7 +10,7 @@ import { formatDataBR, hojeISO } from '../../../../shared/util/format';
 @Component({
   selector: 'app-indicacoes',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [AppCard, BeltBadge, Button],
+  imports: [AppCard, BeltBadge, Button, Icon],
   templateUrl: './indicacoes.html',
   styleUrl: './indicacoes.scss',
 })

@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { GestaoStore } from '../../gestao-store';
-import { AppCard, Button, BeltBadge } from '../../../../shared/ui';
+import { AppCard, Button, BeltBadge, Icon } from '../../../../shared/ui';
 import { BeltColor, Exame } from '../../../../core/models';
 import { formatDataBR } from '../../../../shared/util/format';
 
@@ -9,7 +9,7 @@ import { formatDataBR } from '../../../../shared/util/format';
 @Component({
   selector: 'app-eventos',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [FormsModule, AppCard, Button, BeltBadge],
+  imports: [FormsModule, AppCard, Button, BeltBadge, Icon],
   templateUrl: './eventos.html',
   styleUrl: './eventos.scss',
 })

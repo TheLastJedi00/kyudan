@@ -1,4 +1,4 @@
-<div class="animate-fade-in space-y-5 pb-4">
+<div class="animate-fade-in space-y-4 pb-4">
   <!-- Exames -->
   <section class="space-y-3">
     <div class="flex items-center justify-between">
@@ -64,10 +64,18 @@
         </div>
         <div class="mt-3 grid grid-cols-2 gap-2">
           <app-button variant="secondary" (press)="marcarAcao('lista-' + e.id)">
-            {{ acao() === 'lista-' + e.id ? 'Lista gerada ✓' : 'Gerar lista de chamada' }}
+            @if (acao() === 'lista-' + e.id) {
+              <app-icon name="check" [size]="15" /> Lista gerada
+            } @else {
+              Gerar lista de chamada
+            }
           </app-button>
           <app-button variant="secondary" (press)="marcarAcao('cert-' + e.id)">
-            {{ acao() === 'cert-' + e.id ? 'Certificados ✓' : 'Emitir certificados' }}
+            @if (acao() === 'cert-' + e.id) {
+              <app-icon name="check" [size]="15" /> Certificados
+            } @else {
+              Emitir certificados
+            }
           </app-button>
         </div>
       </app-card>
@@ -88,7 +96,11 @@
         </div>
         <div class="mt-3">
           <app-button variant="primary" [block]="true" (press)="marcarAcao('conv-' + c.id)">
-            {{ acao() === 'conv-' + c.id ? 'Atletas convocados ✓' : 'Convocar atletas de rendimento' }}
+            @if (acao() === 'conv-' + c.id) {
+              <app-icon name="check" [size]="16" /> Atletas convocados
+            } @else {
+              Convocar atletas de rendimento
+            }
           </app-button>
         </div>
       </app-card>

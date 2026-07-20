@@ -63,7 +63,7 @@ export class ResponsavelStore {
         acoes.push({
           tipo: 'aptidao',
           dependenteNome: dep.nome,
-          titulo: `${dep.nome} está apto(a) à faixa ${dep.proximaFaixa.label}! 🎉`,
+          titulo: `${dep.nome} está apto(a) à faixa ${dep.proximaFaixa.label}!`,
           descricao: 'Carga horária e disciplina concluídas. Prepare-se para a graduação.',
         });
       }

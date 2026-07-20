@@ -1,9 +1,9 @@
-<div class="animate-fade-in space-y-4">
+<div class="animate-fade-in space-y-3">
   <!-- Linha do tempo de graduações -->
   <app-card>
     <h3 class="mb-3 font-semibold">Linha do tempo de graduações</h3>
     @if (graduacoes().length) {
-      <ol class="relative space-y-4 border-l border-line pl-5">
+      <ol class="relative space-y-3 border-l border-line pl-5">
         @for (g of graduacoes(); track g.data) {
           <li class="relative">
             <span class="absolute -left-[27px] top-0.5">
@@ -26,7 +26,7 @@
       <ul class="space-y-2">
         @for (c of competicoes(); track c.id) {
           <li class="flex items-center gap-3">
-            <span class="text-xl">{{ medalha(c.medalha) }}</span>
+            <app-icon name="medal" [size]="22" [style.color]="medalCor(c.medalha)" />
             <div class="min-w-0 flex-1">
               <p class="truncate text-sm font-medium">{{ c.evento }}</p>
               <p class="text-xs text-fg-subtle">{{ formatData(c.data) }}</p>
@@ -38,7 +38,7 @@
         }
       </ul>
     } @else {
-      <p class="text-sm text-fg-muted">Sem participações registradas. Hora de competir! 🥋</p>
+      <p class="text-sm text-fg-muted">Sem participações registradas. Hora de competir.</p>
     }
   </app-card>
 </div>

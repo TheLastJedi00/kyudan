@@ -1,5 +1,5 @@
 @if (aluno(); as a) {
-  <div class="animate-fade-in space-y-4 pb-4">
+  <div class="animate-fade-in space-y-3 pb-4">
     <!-- Cabeçalho -->
     <div class="flex items-center gap-2">
       <a routerLink="/professor" class="grid min-h-touch min-w-touch place-items-center rounded-lg text-fg-muted hover:bg-surface-muted" aria-label="Voltar">
@@ -24,7 +24,7 @@
     <app-card>
       <h3 class="mb-1 font-semibold">Avaliação de currículo</h3>
       <p class="mb-3 text-xs text-fg-subtle">Toque para registrar o domínio da técnica.</p>
-      <div class="space-y-4">
+      <div class="space-y-3">
         @for (grupo of grupos(); track grupo.titulo) {
           <div>
             <p class="mb-1.5 text-xs font-semibold uppercase tracking-wide text-fg-subtle">{{ grupo.titulo }}</p>
@@ -45,7 +45,7 @@
                       [class.bg-surface-muted]="!item.dominado"
                       [class.text-fg-subtle]="!item.dominado"
                     >
-                      {{ item.dominado ? '✓' : '' }}
+                      @if (item.dominado) { <app-icon name="check" [size]="14" /> }
                     </span>
                     <span class="flex-1" [class.text-fg-muted]="!item.dominado">{{ item.nome }}</span>
                   </button>
