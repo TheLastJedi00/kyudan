@@ -1,0 +1,97 @@
+<div class="animate-fade-in space-y-5">
+  <!-- Busca global -->
+  <div>
+    <app-search-bar placeholder="Buscar aluno por nome..." (query)="termo.set($event)" />
+    @if (resultados().length) {
+      <div class="mt-2 space-y-1.5">
+        @for (a of resultados(); track a.id) {
+          <app-card [flush]="true">
+            <div class="flex items-center gap-3 p-3">
+              <app-belt-badge [color]="a.beltColor" [size]="16" />
+              <div class="min-w-0 flex-1">
+                <p class="truncate font-medium leading-tight">{{ a.nome }}</p>
+                <p class="text-xs text-fg-subtle">{{ store.poloNome(a.poloId) }}</p>
+              </div>
+              @if (store.isInadimplente(a.id)) {
+                <app-alert-chip tone="danger" label="Inadimplente" />
+              }
+              @if (a.filiacoes.fck !== 'regular') {
+                <app-alert-chip [tone]="a.filiacoes.fck === 'vencido' ? 'danger' : 'warning'" label="FCK" />
+              }
+            </div>
+          </app-card>
+        }
+      </div>
+    }
+  </div>
+
+  <!-- Central de alertas / ações pendentes -->
+  <section>
+    <h2 class="mb-2 text-sm font-semibold uppercase tracking-wide text-fg-subtle">Ações pendentes</h2>
+    @if (store.alertas().length) {
+      <div class="space-y-2">
+        @for (al of store.alertas(); track al.titulo) {
+          <app-card [flush]="true">
+            <div class="flex items-center gap-3 p-3">
+              <span
+                class="grid h-9 w-9 shrink-0 place-items-center rounded-full"
+                [class]="
+                  al.tone === 'danger'
+                    ? 'bg-belt-red/10 text-belt-red'
+                    : al.tone === 'warning'
+                      ? 'bg-belt-orange/10 text-belt-orange'
+                      : 'bg-belt-purple/10 text-belt-purple'
+                "
+              >
+                <app-icon [name]="al.icon" [size]="18" />
+              </span>
+              <p class="flex-1 text-sm font-medium">{{ al.titulo }}</p>
+            </div>
+          </app-card>
+        }
+      </div>
+    } @else {
+      <app-card><p class="text-sm text-fg-muted">Nenhuma pendência crítica. 🥋</p></app-card>
+    }
+  </section>
+
+  <!-- Métricas -->
+  <section class="grid grid-cols-3 gap-3">
+    <app-card>
+      <p class="text-2xl font-bold">{{ store.metricas().ativos }}</p>
+      <p class="text-xs text-fg-muted">Alunos ativos</p>
+    </app-card>
+    <app-card>
+      <p class="text-2xl font-bold text-belt-red">{{ store.metricas().inadimplentes }}</p>
+      <p class="text-xs text-fg-muted">Inadimplentes</p>
+    </app-card>
+    <app-card>
+      <p class="text-2xl font-bold">{{ store.metricas().professores }}</p>
+      <p class="text-xs text-fg-muted">Professores</p>
+    </app-card>
+  </section>
+
+  <!-- Saúde dos pólos -->
+  <section>
+    <h2 class="mb-2 text-sm font-semibold uppercase tracking-wide text-fg-subtle">Saúde dos pólos</h2>
+    <div class="space-y-2">
+      @for (p of store.polosSaude(); track p.id) {
+        <app-card [flush]="true">
+          <div class="flex items-center gap-3 p-3">
+            <div class="min-w-0 flex-1">
+              <p class="truncate font-medium leading-tight">{{ p.nome }}</p>
+              <p class="text-xs text-fg-subtle">{{ p.totalAlunos }} alunos</p>
+            </div>
+            <span
+              class="text-sm font-bold"
+              [class.text-belt-green]="p.crescimentoMes >= 0"
+              [class.text-belt-red]="p.crescimentoMes < 0"
+            >
+              {{ p.crescimentoMes >= 0 ? '+' : '' }}{{ p.crescimentoMes }}
+            </span>
+          </div>
+        </app-card>
+      }
+    </div>
+  </section>
+</div>
