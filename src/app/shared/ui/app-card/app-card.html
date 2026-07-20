@@ -1,0 +1,9 @@
+<div
+  class="rounded-2xl border bg-surface shadow-sm"
+  [class.border-line]="!emphasis()"
+  [class.border-belt-black]="emphasis()"
+  [class.dark:border-white]="emphasis()"
+  [class.p-4]="!flush()"
+>
+  <ng-content />
+</div>
