@@ -1,0 +1,54 @@
+<div class="animate-fade-in space-y-5">
+  <section>
+    <h2 class="mb-2 text-sm font-semibold uppercase tracking-wide text-fg-subtle">
+      Hoje · {{ hojeLabel }}
+    </h2>
+    @if (turmasHoje().length) {
+      <div class="space-y-3">
+        @for (t of turmasHoje(); track t.id) {
+          <a [routerLink]="['/professor/turma', t.id]" class="block">
+            <app-card [emphasis]="true">
+              <div class="flex items-center gap-3">
+                <div class="min-w-0 flex-1">
+                  <p class="font-semibold leading-tight">{{ t.nome }}</p>
+                  <p class="text-xs text-fg-subtle">{{ t.horarioHoje }} · {{ t.alunoIds.length }} alunos</p>
+                </div>
+                <span class="rounded-full bg-belt-black px-3 py-1 text-xs font-semibold text-white dark:bg-white dark:text-belt-black">
+                  Fazer chamada
+                </span>
+                <app-icon name="chevron" [size]="18" />
+              </div>
+            </app-card>
+          </a>
+        }
+      </div>
+    } @else {
+      <app-card>
+        <p class="text-sm text-fg-muted">Nenhuma turma agendada para hoje. Bom descanso! 🥋</p>
+      </app-card>
+    }
+  </section>
+
+  @if (outrasTurmas().length) {
+    <section>
+      <h2 class="mb-2 text-sm font-semibold uppercase tracking-wide text-fg-subtle">
+        Outras turmas
+      </h2>
+      <div class="space-y-3">
+        @for (t of outrasTurmas(); track t.id) {
+          <a [routerLink]="['/professor/turma', t.id]" class="block">
+            <app-card>
+              <div class="flex items-center gap-3">
+                <div class="min-w-0 flex-1">
+                  <p class="font-medium leading-tight">{{ t.nome }}</p>
+                  <p class="text-xs text-fg-subtle">{{ t.diasLabel }} · {{ t.alunoIds.length }} alunos</p>
+                </div>
+                <app-icon name="chevron" [size]="18" />
+              </div>
+            </app-card>
+          </a>
+        }
+      </div>
+    </section>
+  }
+</div>
