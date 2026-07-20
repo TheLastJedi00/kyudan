@@ -1,1 +1,61 @@
-/* You can add global styles to this file, and also import other style files */
+/* ==========================================================================
+   KyuDan — Estilos globais
+   Filosofia: O Kimono (fundo branco/limpo) + A Faixa Preta (tipografia/CTAs).
+   Cor usada com parcimônia, apenas em status e conquistas.
+   ========================================================================== */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* --------------------------------------------------------------------------
+   Design tokens de superfície e tipografia (tematizáveis)
+   Valores em canais RGB para compor com <alpha-value> no Tailwind.
+   -------------------------------------------------------------------------- */
+:root {
+  /* Light Mode (padrão) — fundo branco absoluto, tipografia grafite/chumbo */
+  --bg: 255 255 255;
+  --surface: 255 255 255;
+  --surface-2: 245 245 245; /* gray-100 */
+  --border: 229 229 229; /* gray-200 */
+  --fg: 10 10 10; /* near-black (Dan) */
+  --fg-muted: 82 82 82; /* gray-600 */
+  --fg-subtle: 115 115 115; /* gray-500 */
+
+  color-scheme: light;
+}
+
+.dark {
+  /* Dark Mode — fundos profundos, mantendo contraste das cores de sinalização */
+  --bg: 10 10 10;
+  --surface: 23 23 23; /* neutral-900 */
+  --surface-2: 38 38 38; /* neutral-800 */
+  --border: 64 64 64; /* neutral-700 */
+  --fg: 245 245 245;
+  --fg-muted: 163 163 163; /* neutral-400 */
+  --fg-subtle: 115 115 115;
+
+  color-scheme: dark;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  @apply bg-bg text-fg font-sans antialiased;
+  margin: 0;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+/* Respeita usuários com preferência por menos movimento */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
