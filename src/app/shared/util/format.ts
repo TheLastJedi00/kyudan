@@ -20,3 +20,23 @@ export function formatMesAno(iso: string): string {
   const idx = Number(m) - 1;
   return `${meses[idx] ?? m}/${y}`;
 }
+
+export const DIAS_SEMANA = [
+  'Domingo',
+  'Segunda',
+  'Terça',
+  'Quarta',
+  'Quinta',
+  'Sexta',
+  'Sábado',
+] as const;
+
+/** Data de hoje em ISO 'YYYY-MM-DD' (runtime do browser). */
+export function hojeISO(): string {
+  return new Date().toISOString().slice(0, 10);
+}
+
+/** Dia da semana de hoje (0=Domingo ... 6=Sábado). */
+export function diaSemanaHoje(): number {
+  return new Date().getDay();
+}
