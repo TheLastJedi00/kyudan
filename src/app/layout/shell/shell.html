@@ -13,12 +13,16 @@
       <label class="sr-only" for="persona">Trocar persona</label>
       <select
         id="persona"
-        class="min-h-touch rounded-lg border border-line bg-surface px-2 text-sm text-fg focus:outline-none focus:ring-2 focus:ring-belt-black/30 dark:focus:ring-white/20"
+        class="min-h-touch max-w-[10rem] rounded-lg border border-line bg-surface px-2 text-sm text-fg focus:outline-none focus:ring-2 focus:ring-belt-black/30 dark:focus:ring-white/20"
         [value]="session.currentUser().id"
         (change)="onPersonaChange($any($event.target).value)"
       >
-        @for (p of session.personas; track p.id) {
-          <option [value]="p.id">{{ p.nome }}</option>
+        @for (grupo of session.personasByRole(); track grupo.role) {
+          <optgroup [label]="grupo.titulo">
+            @for (p of grupo.usuarios; track p.id) {
+              <option [value]="p.id">{{ p.nome }}</option>
+            }
+          </optgroup>
         }
       </select>
 
