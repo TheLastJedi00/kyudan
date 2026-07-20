@@ -1,0 +1,13 @@
+<div
+  class="h-2 w-full overflow-hidden rounded-full bg-surface-muted"
+  role="progressbar"
+  [attr.aria-valuenow]="clamped()"
+  aria-valuemin="0"
+  aria-valuemax="100"
+>
+  <div
+    class="progress-fill h-full rounded-full"
+    [style.width.%]="clamped()"
+    [style.backgroundColor]="fill()"
+  ></div>
+</div>
