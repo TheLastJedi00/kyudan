@@ -19,7 +19,7 @@ service cloud.firestore {
 
     function isDemoCollection(name) {
       return name in [
-        'alunos', 'polos', 'turmas', 'exames', 'campeonatos',
+        'usuarios', 'alunos', 'polos', 'turmas', 'exames', 'campeonatos',
         'indicacoes', 'faturas', 'splits', 'inventario', 'frequencias'
       ];
     }

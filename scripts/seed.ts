@@ -23,6 +23,7 @@ import {
   POLOS,
   SPLITS,
   TURMAS,
+  USUARIOS,
 } from '../src/app/core/data/mock-dataset';
 
 const app = initializeApp(environment.firebase);
@@ -40,6 +41,7 @@ async function seedCollection<T>(nome: string, itens: T[], idOf: (item: T) => st
 async function main() {
   console.log(`Populando Firestore do projeto "${environment.firebase.projectId}"...`);
 
+  await seedCollection('usuarios', USUARIOS, (u) => u.id);
   await seedCollection('polos', POLOS, (p) => p.id);
   await seedCollection('turmas', TURMAS, (t) => t.id);
   await seedCollection('alunos', ALUNOS, (a) => a.id);
