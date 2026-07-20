@@ -1,0 +1,82 @@
+<div class="animate-fade-in space-y-5 pb-4">
+  <!-- Split de pagamentos -->
+  <section class="space-y-3">
+    <h2 class="text-lg font-bold">Split de repasses</h2>
+    @for (s of store.splits(); track s.poloId) {
+      <app-card>
+        <p class="mb-2 font-medium">{{ store.poloNome(s.poloId) }}</p>
+        <div class="flex h-6 overflow-hidden rounded-full text-[11px] font-bold text-white">
+          <div class="grid place-items-center bg-belt-black" [style.width.%]="s.percentualSensei">
+            {{ s.percentualSensei }}%
+          </div>
+          <div class="grid flex-1 place-items-center bg-belt-purple">
+            {{ 100 - s.percentualSensei }}%
+          </div>
+        </div>
+        <div class="mt-1 flex justify-between text-xs text-fg-muted">
+          <span>Sensei</span>
+          <span>Associação</span>
+        </div>
+      </app-card>
+    }
+  </section>
+
+  <!-- Inadimplência -->
+  <section class="space-y-3">
+    <div class="flex items-baseline justify-between">
+      <h2 class="text-lg font-bold">Inadimplência</h2>
+      <span class="text-sm font-bold text-belt-red">{{ formatBRL(totalInadimplencia()) }}</span>
+    </div>
+    <app-card [flush]="true">
+      <ul class="divide-y divide-line">
+        @for (f of vencidas(); track f.id) {
+          <li class="flex items-center gap-3 p-3">
+            <div class="min-w-0 flex-1">
+              <p class="truncate font-medium leading-tight">{{ store.alunoNome(f.alunoId) }}</p>
+              <p class="text-xs text-fg-subtle">{{ f.descricao }} · venceu {{ formatData(f.vencimento) }}</p>
+            </div>
+            <div class="text-right">
+              <p class="text-sm font-bold">{{ formatBRL(f.valor) }}</p>
+              <app-alert-chip tone="danger" label="Inscrição bloqueada" />
+            </div>
+          </li>
+        } @empty {
+          <li class="p-3 text-sm text-fg-muted">Nenhuma fatura vencida. 🎉</li>
+        }
+      </ul>
+    </app-card>
+    <p class="text-xs text-fg-subtle">
+      Alunos inadimplentes têm a inscrição em exames/eventos bloqueada automaticamente.
+    </p>
+  </section>
+
+  <!-- Inventário -->
+  <section class="space-y-3">
+    <h2 class="text-lg font-bold">Inventário central</h2>
+    <app-card [flush]="true">
+      <ul class="divide-y divide-line">
+        @for (item of store.inventario(); track item.id) {
+          <li class="flex items-center gap-3 p-3">
+            <div class="min-w-0 flex-1">
+              <p class="truncate font-medium leading-tight">
+                {{ item.nome }}
+                @if (item.tamanho) {
+                  <span class="text-xs text-fg-subtle">· {{ item.tamanho }}</span>
+                }
+              </p>
+              <p class="text-xs text-fg-subtle">Mínimo: {{ item.estoqueMinimo }}</p>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="text-lg font-bold" [class.text-belt-orange]="estoqueBaixo(item)">
+                {{ item.quantidade }}
+              </span>
+              @if (estoqueBaixo(item)) {
+                <app-alert-chip tone="warning" label="Estoque baixo" icon="alert" />
+              }
+            </div>
+          </li>
+        }
+      </ul>
+    </app-card>
+  </section>
+</div>
